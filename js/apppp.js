@@ -93,7 +93,7 @@ function init() {
   
     const bloomPass = new BloomPass(
         1,    // strength
-        25,   // kernel size
+        20,   // kernel size
         5,    // sigma ?
         
     );
@@ -112,16 +112,16 @@ function init() {
 	document.addEventListener('mousemove', onMouseMove, false);
 }
 
-// Follows the mouse event
-function onMouseMove(event) {
+function onMouseMove(x,y) {
 
 	// Update the mouse variable
-	event.preventDefault();
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+	//event.preventDefault();
+	mouse.x =  (x / window.innerWidth) * 2 - 1;
+	mouse.y = - (y / window.innerHeight) * 2 + 1;
+
 
  // Make the sphere follow the mouse
-  var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+  var vector = new THREE.Vector3(mouse.x+.5, mouse.y, 0.5);
 	vector.unproject( camera );
 	var dir = vector.sub( camera.position ).normalize();
 	var distance = - camera.position.z / dir.z;
@@ -134,11 +134,11 @@ function onMouseMove(event) {
 
 
 const options = {
-    length: 400,
+    length: 300,
     width: 20,
     roadWidth: 9,
     islandWidth: 2,
-    nPairs: 50,
+    nPairs: 25,
     roadSections: 3
   };
 
@@ -336,7 +336,7 @@ const rightLightMaterial = new THREE.ShaderMaterial({
           uColor: new THREE.Uniform(new THREE.Color(0x53C2C6)),
           uTravelLength: new THREE.Uniform(options.length),
           uTime: new THREE.Uniform(0),
-          uSpeed: new THREE.Uniform(10)
+          uSpeed: new THREE.Uniform(-10)
         },
         myCustomDistortion.uniforms
       )
@@ -389,12 +389,57 @@ setInterval(function () {
   time++;
   rightLights.material.uniforms.uTime.value = time;
 leftLights.material.uniforms.uTime.value = time;
-}, 50);
+}, 20);
 
 
 
 
+const modelParams = {
+  flipHorizontal: true,   // flip e.g for video 
+  imageScaleFactor: 0.7,  // reduce input image size for gains in speed.
+  maxNumBoxes: 1,        // maximum number of boxes to detect
+  iouThreshold: 0.5,      // ioU threshold for non-max suppression
+  scoreThreshold: 0.8,    // confidence threshold for predictions.
+}
 
+const video = document.querySelector('#video');
+const canvas = document.querySelector('#canvas1');
+const context = canvas.getContext('2d');
+
+let model;
+
+handTrack.startVideo(video)
+  .then(status =>{
+      if(status){
+          console.log('yes')
+          navigator.getUserMedia({video:{}}, stream =>{
+              video.srcObject = stream;
+              setInterval(runDetection,20);
+
+          },
+          err => console.log(err)
+          );
+      }
+  });
+
+function runDetection(){
+  model.detect(video).then(predictions =>{
+      
+      //model.renderPredictions(predictions,canvas,context,video)
+      if (predictions[0]) {
+          let gameX = predictions[0].bbox[0] + (predictions[0].bbox[2] / 2)
+          let gameY = predictions[0].bbox[1] + (predictions[0].bbox[3] / 2)
+          
+          onMouseMove(gameX,gameY)
+      };
+  });
+}
+
+
+handTrack.load(modelParams).then(lmodel => {
+  model = lmodel;
+
+});
 
 
 
