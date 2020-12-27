@@ -4,7 +4,7 @@ A rythmn based game. Control a lightsaber using your mouse or your hand. Will re
 # IN PROGRESS (most game features not implemented)
 
 ## Demo of hand control
-![alt text](https://https://github.com/em682/SaberBeat/blob/master/ezgif.com-gif-maker.mp4 "Video of game")
+![Hand control demo](https://github.com/em682/SaberBeat/blob/master/saberbeat.gif.gif)
 
 
 ## Current Plans: Creating a mouse control version, adding boxes to be destroyed
