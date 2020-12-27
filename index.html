@@ -4,6 +4,7 @@
     <head>
     <meta charset="utf-8">
     <style>
+        body { margin:0; }  
         #canvas2 {
             border: 1px solid #d3d3d3;
             background-image:url("back.jpg");
@@ -12,12 +13,20 @@
             width: 500px;
             height:500px;
         }
+        #container{
+            width: 100%;
+            height: 100%;
+            background-image:url("imgs/copyback.jpg");
+            background-color: black;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
         </style>
-    <title>Beat It</title>
+    <title>Saber Beat</title>
 
     </head>
     <body>
-        <div id="container"></div>
+        
         <!--
         <audio
         controls
@@ -25,17 +34,14 @@
             Your browser does not support the
             <code>audio</code> element.
         </audio>
-        
-        
-        
-        <canvas id ="canvas2"></canvas>
         -->
-        <canvas hidden id ="canvas1"></canvas>
+        <div id ="container"></div>
+        <canvas id ="canvas1"></canvas>
         <video hidden id ="video"></video>
         
         <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script>
-        <script src="three.js"></script>
-        <script src="appp.js"></script>
+        <script  src="js/three.js"></script>
         
+        <script  type="module" src="js/hand.js"></script>
     </body>
 </html>
