@@ -12,7 +12,7 @@ A rythmn based game. Control a lightsaber using your mouse or your hand. Will re
 - menu to choose mouse or web cam
 - scoring
 
-## References
+## Credits
 Hand detection model from:
 [Handtrack.js](https://github.com/victordibia/handtrack.js)
 
